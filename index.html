@@ -13,14 +13,32 @@
   --text:#ECE6DA; --muted:#9b948688; --muted-s:#9b9486; --faint:#6c665b;
   --brass:#C3A36B; --brass-2:#D8BE8A;
   --line:rgba(236,230,218,.09); --line-brass:rgba(195,163,107,.28);
+  --nav-bg:rgba(12,13,12,.78); --btn-bg:#C3A36B; --btn-text:#1a1407;
+  --portrait-from:#1b1d18; --portrait-to:#0a0b0a; --grain-op:.035; --glow:rgba(195,163,107,.16);
   --max:1140px; --pad:clamp(1.25rem,5vw,4rem);
   --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif; --read:'Newsreader',Georgia,serif;
+}
+[data-theme="ivory"]{
+  --ink:#ECE4D2; --bg:#F4EFE6; --surface:#FBF8F1; --surface-2:#F1EADB;
+  --text:#1C1813; --muted:rgba(111,102,87,.7); --muted-s:#6f6657; --faint:#9a9182;
+  --brass:#9A7A3C; --brass-2:#7d6230;
+  --line:rgba(28,24,19,.12); --line-brass:rgba(154,122,60,.4);
+  --nav-bg:rgba(244,239,230,.85); --btn-bg:#1C1813; --btn-text:#F4EFE6;
+  --portrait-from:#ece2cd; --portrait-to:#dccdaf; --grain-op:.03; --glow:rgba(154,122,60,.08);
+}
+[data-theme="slate"]{
+  --ink:#E7E7E4; --bg:#F1F1EF; --surface:#FFFFFF; --surface-2:#E9E9E6;
+  --text:#20242A; --muted:rgba(108,113,119,.8); --muted-s:#6c7177; --faint:#9a9ea3;
+  --brass:#9c7c3e; --brass-2:#7a6230;
+  --line:rgba(32,36,42,.12); --line-brass:rgba(160,135,75,.4);
+  --nav-bg:rgba(241,241,239,.85); --btn-bg:#20242A; --btn-text:#ffffff;
+  --portrait-from:#ffffff; --portrait-to:#dedee0; --grain-op:.02; --glow:rgba(160,135,75,.06);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 /* film grain */
-body::before{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.035;
+body::before{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:var(--grain-op);
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
 a{color:inherit;text-decoration:none}
@@ -28,14 +46,20 @@ a{color:inherit;text-decoration:none}
 .label::before{content:"";width:26px;height:1px;background:var(--brass);opacity:.7}
 .serif{font-family:var(--serif)}
 .btn{display:inline-flex;align-items:center;gap:.55rem;font-family:var(--sans);font-size:.82rem;font-weight:500;letter-spacing:.02em;padding:.85rem 1.5rem;border-radius:2px;border:1px solid transparent;transition:.35s cubic-bezier(.2,.7,.2,1);cursor:pointer}
-.btn-primary{background:var(--brass);color:#1a1407}
-.btn-primary:hover{background:var(--brass-2);transform:translateY(-2px)}
+.btn-primary{background:var(--btn-bg);color:var(--btn-text)}
+.btn-primary:hover{filter:brightness(1.12);transform:translateY(-2px)}
 .btn-ghost{border-color:var(--line-brass);color:var(--brass)}
 .btn-ghost:hover{border-color:var(--brass);background:rgba(195,163,107,.06)}
+.nav-cta{background:var(--brass);color:#000;padding:.6rem 1.1rem}
+.theme-switch{display:flex;align-items:center;gap:.35rem}
+.ts-btn{width:26px;height:26px;padding:0;border:1px solid var(--line);border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:transparent;transition:.25s}
+.ts-btn span{width:15px;height:15px;border-radius:50%;border:1px solid rgba(128,128,128,.35);display:block}
+.ts-btn.active{border-color:var(--brass);box-shadow:0 0 0 2px var(--line-brass)}
+.ts-btn:hover{transform:translateY(-1px)}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:.4s;border-bottom:1px solid transparent}
-nav.solid{background:rgba(12,13,12,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+nav.solid{background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .nav-in{max-width:var(--max);margin:0 auto;padding:1.1rem var(--pad);display:flex;align-items:center;justify-content:space-between}
 .brandmark{font-family:var(--serif);font-size:1.15rem;letter-spacing:.02em;display:flex;align-items:center;gap:.6rem}
 .brandmark b{color:var(--brass);font-weight:500}
@@ -44,11 +68,11 @@ nav.solid{background:rgba(12,13,12,.78);backdrop-filter:blur(14px);border-bottom
 .nav-links a:hover{color:var(--text)}
 .nav-links a.soon{color:var(--faint);pointer-events:none}
 .nav-links a.soon::after{content:"soon";font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);margin-left:.4rem;vertical-align:super;opacity:.7}
-@media(max-width:860px){.nav-links a:not(.nav-cta){display:none}}
+@media(max-width:860px){.nav-links a:not(.nav-cta){display:none}.nav-links{gap:.7rem}.nav-cta{padding:.5rem .8rem;font-size:.76rem}.ts-btn{width:23px;height:23px}.ts-btn span{width:13px;height:13px}.brandmark{font-size:1rem}}
 
 /* HERO */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;padding-top:6rem;padding-bottom:3rem;overflow:hidden}
-.hero-glow{position:absolute;top:8%;right:-6%;width:60vw;max-width:760px;aspect-ratio:1;background:radial-gradient(circle,rgba(195,163,107,.16),transparent 62%);filter:blur(10px);pointer-events:none}
+.hero-glow{position:absolute;top:8%;right:-6%;width:60vw;max-width:760px;aspect-ratio:1;background:radial-gradient(circle,var(--glow),transparent 62%);filter:blur(10px);pointer-events:none}
 .hero-grid{display:grid;grid-template-columns:1.35fr .9fr;gap:clamp(2rem,5vw,4.5rem);align-items:center;width:100%;position:relative;z-index:2}
 .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(3rem,8vw,6.4rem);line-height:.98;letter-spacing:-.02em;margin:1.3rem 0 1.4rem}
 .hero .pos{font-family:var(--read);font-size:clamp(1.05rem,1.6vw,1.3rem);color:var(--muted-s);max-width:46ch;line-height:1.5}
@@ -58,8 +82,8 @@ nav.solid{background:rgba(12,13,12,.78);backdrop-filter:blur(14px);border-bottom
 .hero-meta span+span::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--brass);opacity:.6}
 /* portrait */
 .portrait{position:relative;aspect-ratio:4/5;border:1px solid var(--line-brass);background:
-   radial-gradient(120% 80% at 70% 18%,rgba(195,163,107,.14),transparent 55%),
-   linear-gradient(165deg,#1b1d18 0%,#101210 60%,#0a0b0a 100%);
+   radial-gradient(120% 80% at 70% 18%,var(--glow),transparent 55%),
+   linear-gradient(165deg,var(--portrait-from),var(--portrait-to));
    display:flex;align-items:center;justify-content:center;overflow:hidden}
 .portrait::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 50% at 50% 42%,rgba(236,230,218,.05),transparent 60%)}
 .portrait .mono{font-family:var(--serif);font-size:clamp(4rem,9vw,7rem);color:var(--brass);opacity:.34;letter-spacing:.02em}
@@ -142,6 +166,7 @@ footer{background:var(--ink);padding:4rem 0 2.5rem;border-top:1px solid var(--li
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 .mockflag{position:fixed;bottom:14px;left:14px;z-index:9998;font-family:var(--sans);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);background:rgba(12,13,12,.7);border:1px solid var(--line);padding:.4rem .7rem;border-radius:2px}
 </style>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('mh-theme')||'obsidian')}catch(e){}</script>
 </head>
 <body>
 
@@ -153,7 +178,12 @@ footer{background:var(--ink);padding:4rem 0 2.5rem;border-top:1px solid var(--li
       <a href="#positions">Positions</a>
       <a href="#stats">Practice</a>
       <a href="#" class="soon">Insights</a>
-      <a href="#contact" class="btn btn-primary nav-cta" style="padding:.6rem 1.1rem">Raise an enquiry</a>
+      <a href="#contact" class="btn btn-primary nav-cta" style="color:#000">Raise an enquiry</a>
+      <div class="theme-switch" role="group" aria-label="Choose theme">
+        <button class="ts-btn" data-set-theme="obsidian" title="Obsidian — dark" aria-label="Obsidian"><span style="background:#101210"></span></button>
+        <button class="ts-btn" data-set-theme="ivory" title="Ivory — warm light" aria-label="Ivory"><span style="background:#F4EFE6"></span></button>
+        <button class="ts-btn" data-set-theme="slate" title="Slate — grey &amp; white" aria-label="Slate"><span style="background:#EDEDEB"></span></button>
+      </div>
     </div>
   </div>
 </nav>
@@ -297,6 +327,15 @@ footer{background:var(--ink);padding:4rem 0 2.5rem;border-top:1px solid var(--li
 <div class="mockflag">Mockup · placeholder content</div>
 
 <script>
+// theme switcher
+(function(){
+  const KEY='mh-theme', root=document.documentElement;
+  function set(t){root.setAttribute('data-theme',t);try{localStorage.setItem(KEY,t)}catch(e){}
+    document.querySelectorAll('.ts-btn').forEach(b=>b.classList.toggle('active',b.dataset.setTheme===t));}
+  document.querySelectorAll('.ts-btn').forEach(b=>b.addEventListener('click',()=>set(b.dataset.setTheme)));
+  let saved='obsidian';try{saved=localStorage.getItem(KEY)||'obsidian'}catch(e){}
+  set(saved);
+})();
 // sticky nav solidify
 const nav=document.getElementById('nav');
 addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>40),{passive:true});
